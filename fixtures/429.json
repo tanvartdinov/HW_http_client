@@ -1,0 +1,8 @@
+{
+  "status_code": 429,
+  "headers": {
+    "Content-Type": "application/json",
+    "Retry-After": "2"
+  },
+  "body_text": "{\"detail\": \"Слишком много запросов\"}"
+}

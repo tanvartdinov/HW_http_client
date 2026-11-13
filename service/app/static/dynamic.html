@@ -1,0 +1,55 @@
+<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Динамическая афиша — практика</title><link rel="stylesheet" href="/static/style.css">
+<header class="header"><a class="brand" href="/">афиша.</a><span>Динамический каталог</span></header><main class="catalog"><section class="hero"><h1>Найти своё событие</h1><p>Дополнительная страница для практики Playwright.</p></section><form id="search" class="search"><label for="q">Поиск по названию</label><div class="search-row"><input id="q" name="q" type="search" maxlength="100" placeholder="Например, джаз"><button type="submit">Найти</button></div></form><p id="status" role="status" aria-live="polite">Загрузка…</p><section id="results" class="grid" data-state="loading" aria-label="Результаты поиска"></section></main>
+<script>
+const form = document.querySelector('#search');
+const results = document.querySelector('#results');
+const status = document.querySelector('#status');
+let activeController;
+function node(tag, className, text) {
+  const el = document.createElement(tag);
+  el.className = className;
+  el.textContent = text;
+  return el;
+}
+async function loadEvents() {
+  if (activeController) activeController.abort();
+  const controller = new AbortController();
+  activeController = controller;
+  const timeout = setTimeout(() => controller.abort(), 10000);
+  results.dataset.state = 'loading';
+  results.replaceChildren();
+  status.textContent = 'Загрузка…';
+  try {
+    const query = new URLSearchParams({q: document.querySelector('#q').value});
+    const response = await fetch('/api/v1/events?' + query, {signal: controller.signal});
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+    const data = await response.json();
+    if (!Array.isArray(data.items) || data.total !== data.items.length) throw new Error('Неверный формат данных');
+    if (activeController !== controller) return;
+    for (const event of data.items) {
+      const article = node('article', 'event-card', '');
+      article.dataset.id = event.id;
+      const title = node('h2', 'event-title', '');
+      const link = node('a', '', event.title);
+      link.href = event.url;
+      title.append(link);
+      const time = node('time', 'event-date', event.starts_at);
+      time.dateTime = event.starts_at;
+      const price = node('p', 'event-price', event.price === 0 ? 'Бесплатно' : event.price + ' ₽');
+      price.dataset.value = event.price;
+      article.append(title, time, node('p', 'event-venue', event.venue), price);
+      results.append(article);
+    }
+    status.textContent = 'Найдено: ' + data.total;
+    if (!data.total) results.append(node('p', 'empty', 'Ничего не найдено'));
+    results.dataset.state = 'loaded';
+  } catch (error) {
+    if (activeController !== controller) return;
+    results.replaceChildren();
+    results.dataset.state = 'error';
+    status.textContent = 'Не удалось загрузить события. Попробуйте ещё раз.';
+  } finally { clearTimeout(timeout); }
+}
+form.addEventListener('submit', event => {event.preventDefault(); loadEvents();});
+loadEvents();
+</script></html>

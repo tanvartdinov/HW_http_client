@@ -1,0 +1,7 @@
+{
+  "status_code": 422,
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "body_text": "{\"detail\": \"Некорректный параметр\"}"
+}

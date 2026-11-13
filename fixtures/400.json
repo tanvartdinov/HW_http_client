@@ -1,0 +1,7 @@
+{
+  "status_code": 400,
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "body_text": "{\"detail\": \"Некорректный запрос\"}"
+}

@@ -1,0 +1,7 @@
+{
+  "status_code": 500,
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "body_text": "{\"detail\": \"Учебная ошибка сервера\"}"
+}

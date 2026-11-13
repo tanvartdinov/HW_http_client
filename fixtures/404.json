@@ -1,0 +1,7 @@
+{
+  "status_code": 404,
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "body_text": "{\"detail\": \"Мероприятие не найдено\"}"
+}

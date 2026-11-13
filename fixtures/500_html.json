@@ -1,0 +1,7 @@
+{
+  "status_code": 500,
+  "headers": {
+    "Content-Type": "text/html"
+  },
+  "body_text": "<html><h1>Server error</h1></html>"
+}

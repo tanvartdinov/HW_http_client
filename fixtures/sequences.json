@@ -1,0 +1,32 @@
+{
+  "server_recovers": [
+    {
+      "response_file": "500.json"
+    },
+    {
+      "response_file": "500.json"
+    },
+    {
+      "response_file": "200_list.json"
+    }
+  ],
+  "timeout_recovers": [
+    {
+      "exception": "requests.exceptions.Timeout"
+    },
+    {
+      "response_file": "200_list.json"
+    }
+  ],
+  "network_exhausted": [
+    {
+      "exception": "requests.exceptions.ConnectionError"
+    },
+    {
+      "exception": "requests.exceptions.ConnectionError"
+    },
+    {
+      "exception": "requests.exceptions.ConnectionError"
+    }
+  ]
+}
