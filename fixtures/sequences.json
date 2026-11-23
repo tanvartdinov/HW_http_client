@@ -28,5 +28,9 @@
     {
       "exception": "requests.exceptions.ConnectionError"
     }
+  ],
+  "rate_limit_recovers": [
+    {"response_file": "429.json"},
+    {"response_file": "200_list.json"}
   ]
 }
